@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:       #0e0e0e;
+  --ink2:      #3a3a3a;
+  --ink3:      #7a7a7a;
+  --paper:     #f5f2eb;
+  --paper2:    #ece8df;
+  --paper3:    #ddd8cc;
+  --accent:    #c84b2f;
+  --accent2:   #e8a020;
+  --success:   #2d7a4f;
+  --warn:      #b85c00;
+  --info:      #1a5c9e;
+  --border:    rgba(14,14,14,0.12);
+  --shadow:    0 2px 12px rgba(14,14,14,0.08);
+  --shadow-lg: 0 8px 40px rgba(14,14,14,0.14);
+  --radius:    6px;
+  --sans:  'Syne', sans-serif;
+  --mono:  'IBM Plex Mono', monospace;
+  --serif: 'Instrument Serif', serif;
+}
+
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); }
+
+@keyframes fadeUp   { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+@keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:.45} }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes shimmer  { 0%{background-position:-600px 0} 100%{background-position:600px 0} }
+@keyframes blink    { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.fu { animation: fadeUp  .38s ease both; }
+.fi { animation: fadeIn  .25s ease both; }
+
+::-webkit-scrollbar       { width:5px; height:5px; }
+::-webkit-scrollbar-track { background: var(--paper2); }
+::-webkit-scrollbar-thumb { background: var(--paper3); border-radius:3px; }
+
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
