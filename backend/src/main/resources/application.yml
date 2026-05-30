@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: invoice-ai-manager
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:invoicedb}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 22MB
+
+server:
+  port: 8080
+  error:
+    include-message: always
+
+# AI
+claude:
+  api-key: ${CLAUDE_API_KEY:}
+  model: claude-sonnet-4-20250514
+  max-tokens: 1000
+
+# OCR
+tesseract:
+  data-path: ${TESSDATA_PREFIX:/usr/share/tessdata}
+  language: eng
+
+# File storage (local disk; swap to S3 via env)
+storage:
+  local-path: ${STORAGE_PATH:/tmp/invoice-uploads}
+
+# CORS — allow React dev server
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+logging:
+  level:
+    com.invoiceai: DEBUG
+    org.springframework.web: INFO
