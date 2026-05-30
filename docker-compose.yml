@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: invoice_db
+    environment:
+      POSTGRES_DB:       invoicedb
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: invoice_backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST:         postgres
+      DB_PORT:         5432
+      DB_NAME:         invoicedb
+      DB_USER:         postgres
+      DB_PASS:         postgres
+      CLAUDE_API_KEY:  ${CLAUDE_API_KEY}
+      TESSDATA_PREFIX: /usr/share/tessdata
+      STORAGE_PATH:    /app/uploads
+      CORS_ORIGINS:    http://localhost:5173
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: invoice_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  uploads:
